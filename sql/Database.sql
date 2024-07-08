@@ -40,29 +40,31 @@ INSERT INTO `category` VALUES (1,'Danh Thiếp - Namecards'),(2,'Bao Thư - Enve
 UNLOCK TABLES;
 
 --
--- Table structure for table `notify`
+-- Table structure for table `contact`
 --
 
-DROP TABLE IF EXISTS `notify`;
+DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `notify` (
+CREATE TABLE `contact` (
   `id` int NOT NULL AUTO_INCREMENT,
   `message` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `user_id` int DEFAULT NULL,
-  `order_id` int DEFAULT NULL,
+  `fullname` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `phone_number` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `notify`
+-- Dumping data for table `contact`
 --
 
-LOCK TABLES `notify` WRITE;
-/*!40000 ALTER TABLE `notify` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notify` ENABLE KEYS */;
+LOCK TABLES `contact` WRITE;
+/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -88,7 +90,7 @@ CREATE TABLE `order_details` (
   CONSTRAINT `order_details_chk_1` CHECK ((`price` >= 0)),
   CONSTRAINT `order_details_chk_2` CHECK ((`number_of_product` > 0)),
   CONSTRAINT `order_details_chk_3` CHECK ((`total_money` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +99,7 @@ CREATE TABLE `order_details` (
 
 LOCK TABLES `order_details` WRITE;
 /*!40000 ALTER TABLE `order_details` DISABLE KEYS */;
-INSERT INTO `order_details` VALUES (34,15,33,70000,6,420000),(35,15,32,50000,4,200000);
+INSERT INTO `order_details` VALUES (36,16,3,150000,1,150000),(37,16,4,330000,1,330000),(38,16,5,130000,1,130000),(39,16,8,560000,1,560000),(40,16,7,2200000,1,2200000),(41,16,6,360000,1,360000),(42,16,10,150000,1,150000);
 /*!40000 ALTER TABLE `order_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +130,7 @@ CREATE TABLE `orders` (
   KEY `orders_ibfk_1` (`user_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `orders_chk_1` CHECK ((`total_money` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +139,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (15,7,'Hoàng Văn Toàn','toan@gmail.com','0387235974','Bắc giang','asddsfsdfds','2024-07-02 13:46:10','cancelled',620000,'Priority Mail',NULL,'Credit',NULL,'http://localhost:3000/8543276c9348491f8371dbeb1655a623_tplv-photomode-image.jpeg');
+INSERT INTO `orders` VALUES (16,7,'Hoàng Văn Toàn','toan@gmail.com','0387235974','Bắc giang','okeokeorkeorkeore','2024-07-03 10:04:24','cancelled',3880000,'Expedited',NULL,'Prepaid',NULL,'http://localhost:3000/8543276c9348491f8371dbeb1655a623_tplv-photomode-image.jpeg');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +268,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'Hoàng Toàn nrr','0387235974','Huong vi ba giàn','$2a$12$1FMqUa4qSTEBocFQdIjOR.6jIthfyf1I/Ju6zhW6g17Hc1QvXSjse','2024-06-24 10:36:39','2024-06-24 10:36:39',1,'2003-05-31',2,'vantoan@gmail.com','http://localhost:3000/83044424_1056840531344697_2607636458294476800_n.jpg'),(7,'Hoàng Văn Toàn','0387235974','Bắc giang','$2a$12$WdymrfQw9MIejmnnk69WcuUWZFiL70Rf1G4G7NAQVQIYnpR/zidvm','2024-06-27 11:59:43','2024-06-27 11:59:43',1,'2002-05-27',1,'toan@gmail.com','http://localhost:3000/8543276c9348491f8371dbeb1655a623_tplv-photomode-image.jpeg'),(8,'ly thị hoa','0387235974','','$2a$12$pwquNwNAlmrKa5rx/1U7xuVbi2G1Xc8yhlDhvrvOGyr7PGDn90qFS','2024-06-27 12:00:45','2024-06-27 12:00:45',0,NULL,2,'hoa1234@gmail.com',NULL);
+INSERT INTO `users` VALUES (4,'Hoàng Toàn nrr','0387235974','Huong vi ba giàn','$2a$12$1FMqUa4qSTEBocFQdIjOR.6jIthfyf1I/Ju6zhW6g17Hc1QvXSjse','2024-06-24 10:36:39','2024-06-24 10:36:39',1,'2003-05-31',2,'vantoan@gmail.com','http://localhost:3000/83044424_1056840531344697_2607636458294476800_n.jpg'),(7,'Hoàng Văn Toàn','0387235974','Bắc giang','$2a$12$WdymrfQw9MIejmnnk69WcuUWZFiL70Rf1G4G7NAQVQIYnpR/zidvm','2024-06-27 11:59:43','2024-06-27 11:59:43',1,'2002-05-27',1,'toan@gmail.com','http://localhost:3000/8543276c9348491f8371dbeb1655a623_tplv-photomode-image.jpeg'),(8,'ly thị hoa','0387235974','','$2a$12$pwquNwNAlmrKa5rx/1U7xuVbi2G1Xc8yhlDhvrvOGyr7PGDn90qFS','2024-06-27 12:00:45','2024-06-27 12:00:45',1,NULL,1,'hoa1234@gmail.com',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -279,4 +281,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-03  9:50:24
+-- Dump completed on 2024-07-08 18:04:56
