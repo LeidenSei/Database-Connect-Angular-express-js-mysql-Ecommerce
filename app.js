@@ -615,5 +615,62 @@ app.get('/api/roles',(req, res) => {
         }
     })
 })
+//contact
+app.post('/api/contacts', (req, res) => {
+    const { message, user_id, fullname, phone_number, email } = req.body;
+
+    const query = `
+        INSERT INTO contact (message, user_id, fullname, phone_number, email)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+    conn.query(query, [message, user_id || null, fullname, phone_number, email], (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            console.log(err);
+        } else {
+            res.json(data);
+        }
+    });
+});
+
+app.get('/api/contacts', (req, res) => {
+    conn.query(`SELECT * FROM contact ORDER BY created_at DESC`, (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            console.log(err);
+        } else {
+            res.json(data);
+        }
+    });
+});
+app.get('/api/contacts/:id', (req, res) => {
+    let id = req.params.id
+    conn.query(`SELECT * FROM contact where id = ${id} `, (err, data) => {
+        if (err) {
+            res.sendStatus(500);
+            console.log(err);
+        } else {
+            res.json(data[0]);
+        }
+    });
+});
+app.post('/api/contacts/delete', (req, res) => {
+    const ids = req.body.ids;
+    if (!Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).send('Invalid request');
+    }
+
+    const placeholders = ids.map(() => '?').join(',');
+    const sql = `DELETE FROM contact WHERE id IN (${placeholders})`;
+
+    conn.query(sql, ids, (err, result) => {
+        if (err) {
+            res.sendStatus(500);
+            console.log(err);
+        } else {
+            res.json({ message: 'Contacts deleted successfully' });
+        }
+    });
+});
 
 app.listen(3000, () => { }) 
