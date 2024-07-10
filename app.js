@@ -107,13 +107,14 @@ app.put('/api/product/:id', upLoadfile.single('image'), (req, res) => {
           WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             res.sendStatus(500)
+            console.log(err);
         } else {
             res.json(data)
         }
     })
 })
 app.get('/api/product', (req, res) => {
-    conn.query(`Select product.*,category.name as 'category' from product join category on product.category_id=category.id`, (err, data) => {
+    conn.query(`Select product.*,category.name as 'category' from product join category on product.category_id=category.id and product.status = 1`, (err, data) => {
         if (err) {
             res.sendStatus(500)
         } else {
@@ -123,14 +124,35 @@ app.get('/api/product', (req, res) => {
 })
 //shop
 app.get('/api/shop', (req, res) => {
-    conn.query(`Select product.*,category.name as 'category' from product join category on product.category_id=category.id and product.status = 1`, (err, data) => {
+    const query = `
+        SELECT 
+            product.*, 
+            category.name AS 'category',
+            COUNT(product_ratings.rating_star) AS rating_count,
+            AVG(product_ratings.rating_star) AS rating_avg,
+            (AVG(product_ratings.rating_star) / 5) * 100 AS average_rating_percentage
+        FROM 
+            product 
+        JOIN 
+            category ON product.category_id = category.id
+        LEFT JOIN 
+            product_ratings ON product.id = product_ratings.product_id
+        WHERE 
+            product.status = 1
+        GROUP BY 
+            product.id;
+    `;
+
+    conn.query(query, (err, data) => {
         if (err) {
-            res.sendStatus(500)
+            res.sendStatus(500);
         } else {
-            res.json(data)
+            res.json(data);
         }
-    })
-})
+    });
+});
+
+
 app.get('/api/shop/product-name/:name', (req, res) => {
     let name = req.params.name;
     let searchTerm = '%' + name + '%';
@@ -167,13 +189,13 @@ app.get('/api/shop/category-count', (req, res) => {
 });
 
 
-app.get('/api/product/3_recent_product', (req, res) => {
+app.get('/api/product/4_recent_product', (req, res) => {
     conn.query(
         `SELECT product.*, category.name as 'category' 
          FROM product 
          JOIN category ON product.category_id = category.id and product.status = 1
          ORDER BY product.id DESC 
-         LIMIT 3`,
+         LIMIT 4`,
         (err, data) => {
             if (err) {
                 res.sendStatus(500);
