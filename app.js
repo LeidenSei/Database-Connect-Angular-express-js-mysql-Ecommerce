@@ -114,7 +114,7 @@ app.put('/api/product/:id', upLoadfile.single('image'), (req, res) => {
     })
 })
 app.get('/api/product', (req, res) => {
-    conn.query(`Select product.*,category.name as 'category' from product join category on product.category_id=category.id and product.status = 1`, (err, data) => {
+    conn.query(`Select product.*,category.name as 'category' from product join category on product.category_id=category.id`, (err, data) => {
         if (err) {
             res.sendStatus(500)
         } else {
@@ -527,7 +527,7 @@ app.put('/api/checkout-order/set-status-order/:id', (req, res) => {
 app.get('/api/checkout-order/userId/:id', (req, res) => {
     let id = req.params.id
 
-    conn.query(`Select * from orders Where user_id = ${id}`, (err, data) => {
+    conn.query(`Select * from orders Where user_id = ${id} order by order_date desc`, (err, data) => {
         if (err) {
             res.sendStatus(500)
         } else {
